@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Homepage</title>
+</head>
+<body class="bg-zinc-900">
+    <!-- Main Container -->
+    <div class="bg-zinc-900 min-h-screen w-full text-white">
+        <!-- Header with Logout Button -->
+        <header class="flex justify-between items-center p-6">
+            <h1 class="text-2xl font-bold">Welcome, <%= user.fullname %>!</h1>
+            <form action="/logout" method="get">
+                <button class="px-4 py-2 bg-orange-900 text-xl font-bold rounded-md cursor-pointer hover:bg-red-800">
+                    Logout
+                </button>
+            </form>
+        </header>
+
+        <!-- Content Container -->
+        <div class="container mx-auto px-4">
+
+            <form action="/post" method="post" class="flex gap-4 mb-8">
+                <input
+                    class="flex-grow bg-zinc-700 px-4 py-2 rounded-md focus:outline-none"
+                    type="text"
+                    name="content"
+                    placeholder="What's on your mind?"
+                    required
+                >
+                <button
+                    class="px-6 py-2 bg-green-900 text-xl font-bold rounded-md cursor-pointer hover:bg-green-800"
+                    type="submit">
+                    Post
+                </button>
+            </form>
+
+            <hr class="border-gray-700 mb-8">
+
+            <div class="space-y-6">
+                <h1>Your Posts</h1>
+                <% user.posts.reverse().forEach(post => { %>
+                    <div class="post mt-4 bg-zinc-800 p-6 rounded-md shadow-md w-[80vw] mx-auto mb-4">
+                            <h1 class="text-blue-500 mb-3">@<%= user.username %></h1>
+                        <p class="mb-4">
+                        <%= post.content %>
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <div class="like flex items-center gap-2">
+                                <a href="/like/<%= post._id %>">
+                                    <button class="flex items-center justify-center w-24 py-2 ring-1 ring-black rounded-md hover:bg-green-900">
+                                        <%= post.likes.indexOf(user._id) === -1 ? "👍 Like" : "Dislike " %>
+                                    </button>
+                                </a>
+                                    <span class="ml-2 text-lg">
+                                        <%= post.likes.length %>
+                                </span>
+                            </div>
+
+                        <a href="/edit/<%= post._id %>">
+                            <button class="w-24 py-2 ring-1 ring-black rounded-md hover:bg-green-900">
+                                Edit
+                            </button>
+                        </a> 
+                        </div>
+                    </div>
+                </div>
+                        <% }); %>
+        </div>
+    </div>
+</body>
+</html>
